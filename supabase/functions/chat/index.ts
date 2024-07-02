@@ -7,9 +7,9 @@ import OpenAI from 'openai';
 // const openai = new OpenAI({
 //   apiKey: Deno.env.get('OPENAI_API_KEY'),
 // });
+
 const openai = new OpenAI({
-  // baseURL: 'http://host.docker.internal:11434/v1/',
-  baseURL: 'http://localhost:11434/v1/',
+  baseURL: 'http://host.docker.internal:11434/v1/',
   apiKey: 'ollama',
 });
 
