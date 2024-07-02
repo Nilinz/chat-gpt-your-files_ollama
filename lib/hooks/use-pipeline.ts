@@ -10,16 +10,12 @@ export type PipeParameters = Parameters<Pipeline['_call']>;
 export type PipeReturnType = Awaited<ReturnType<Pipeline['_call']>>;
 export type PipeFunction = (...args: PipeParameters) => Promise<PipeReturnType>;
 
-/**
- * Hook to build a Transformers.js pipeline function.
- *
- * Similar to `pipeline()`, but runs inference in a separate
- * Web Worker thread and asynchronous logic is
- * abstracted for you.
- *
- * *Important:* `options` must be memoized (if passed),
- * otherwise the hook will continuously rebuild the pipeline.
- */
+
+// Додала
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export function usePipeline(
   task: string,
   model?: string,
@@ -102,12 +98,15 @@ export function usePipeline(
 
     worker.addEventListener('message', onMessageReceived);
 
-    const pipe: PipeFunction = (...args) => {
+    const pipe: PipeFunction = async (...args) => {
       if (!worker) {
         throw new Error('Worker unavailable');
       }
 
       const id = currentId++;
+
+
+      await delay(100);
 
       return new Promise<PipeReturnType>((resolve) => {
         callbacks.set(id, resolve);
@@ -125,3 +124,4 @@ export function usePipeline(
 
   return pipe;
 }
+

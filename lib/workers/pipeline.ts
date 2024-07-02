@@ -72,6 +72,14 @@ class PipelineSingleton {
   }
 }
 
+
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+
 // Listen for messages from the main thread
 self.addEventListener(
   'message',
@@ -106,6 +114,8 @@ self.addEventListener(
         }
 
         const { id } = event.data;
+
+        await delay(100); 
 
         const output = await PipelineSingleton.instance(...args);
 
